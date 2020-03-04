@@ -1,8 +1,8 @@
 <?php
 /*
  * 功能：会员中心－个人中心
- * Author:资料空白
- * Date:20180509
+ * Author:Traceless
+ * Date:2020年3月4日 11:58:09
  */
 
 class OrderController extends ProductBasicController
@@ -51,8 +51,13 @@ class OrderController extends ProductBasicController
 						$qq = '';
 					}else{
 						$qq = $this->getPost('qq');
-						if($qq AND is_numeric($qq)){
-							$email = $qq.'@qq.com';
+						if($qq){
+							if(is_numeric($qq)){
+								$email = $qq.'@qq.com';
+							}else{
+								$data = array('code' => 1006, 'msg' => 'QQ格式不正确');
+								Helper::response($data);	
+							}
 						}else{
 							$data = array('code' => 1006, 'msg' => '丢失参数');
 							Helper::response($data);
@@ -60,8 +65,14 @@ class OrderController extends ProductBasicController
 					}
 				}else{
 					$email = $this->getPost('email',false);
-					if($email AND isEmail($email)){
-						$qq = '';
+					if($email){
+						$email = strtolower($email);
+						if(isEmail($email)){
+							$qq = '';
+						}else{
+							$data = array('code' => 1006, 'msg' => '邮箱格式不正确');
+							Helper::response($data);
+						}
 					}else{
 						$data = array('code' => 1006, 'msg' => '丢失参数');
 						Helper::response($data);
@@ -272,7 +283,7 @@ class OrderController extends ProductBasicController
 									}
 									$payclass = "\\Pay\\".$paymethod."\\".$paymethod;
 									$PAY = new $payclass();
-									$params =array('pid'=>$order['pid'],'orderid'=>$orderid,'money'=>$order['money'],'productname'=>$productname,'weburl'=>$this->config['weburl'],'qrserver'=>$this->config['qrserver']);
+									$params =array('pid'=>$order['pid'],'orderid'=>$orderid,'money'=>$order['money'],'productname'=>$productname,'webname'=>$this->config['webname'],'weburl'=>$this->config['weburl'],'qrserver'=>$this->config['qrserver'],'payjsredicurl'=>$this->config['payjsredicurl'],'payjspagelogo'=>$this->config['payjspagelogo']);
 									$data = $PAY->pay($payconfig,$params);
 								} catch (\Exception $e) {
 									$data = array('code' => 1005, 'msg' => $e->getMessage());
@@ -349,7 +360,7 @@ class OrderController extends ProductBasicController
 							try{
 								$payclass = "\\Pay\\".$paymethod."\\".$paymethod;
 								$PAY = new $payclass();
-								$params =array('orderid'=>$orderid,'money'=>$order['money'],'productname'=>$order['productname'],'weburl'=>$this->config['weburl']);
+								$params =array('orderid'=>$orderid,'money'=>$order['money'],'productname'=>$order['productname'],'weburl'=>$this->config['weburl'],'order'=>$order);
 								$msg = $PAY->jump($payconfig,$params);
 							} catch (\Exception $e) {
 								$msg = $e->getMessage();
