@@ -2,6 +2,13 @@
 
 ## 基于ZFAKA二次开发，添加PayJS支付渠道收银台模式（可保存到相册支付）
 
+**假设你的t_config目前最大的ID为33，那么执行如下语句，否则把下面sql中的34.35改成你ID接下去的值**
+```sql
+INSERT INTO `t_config` (`id`, `catid`, `name`, `value`, `tag`, `lock`, `updatetime`) VALUES
+(34, 1, 'payjsredicurl', '', 'Payjs支付后跳转的页面', '1', '1546063186'),
+(35, 1, 'payjspagelogo', '', 'Payjs支付时的上架logo', '1', '1546063186');
+```
+
 ### 关于ZFAKA，请移步：[ZFAKA](https://github.com/zlkbdotnet/zfaka)
 免费、安全、稳定、高效的发卡系统，值得拥有!
 演示地址：http://faka.zlkb.net/
