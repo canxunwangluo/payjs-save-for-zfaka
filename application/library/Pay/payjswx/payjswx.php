@@ -26,9 +26,9 @@ class payjswx
             'out_trade_no' => $params['orderid'],
             'total_fee'    => $params['money'] * 100,
             'notify_url'   => $params['weburl'] . 'product/notify/?paymethod='.$this->paymethod,
-		    'callback_url' => $params['payjsredicurl'] ,
-		    'logo'		   => $params['payjspagelogo'] ,
-		    'auto'		   => '1'
+		  'callback_url' => $params['payjsredicurl'] ,
+		  'logo'		  => $params['payjspagelogo'] ,
+		  'auto'		  => '1'
 			
         ];
         $this->key    = $payconfig['app_secret'];
