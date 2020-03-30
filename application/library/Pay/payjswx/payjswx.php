@@ -2,8 +2,8 @@
 /**
  * File: payjs.php
  * Functionality: payjs
- * Author: 资料空白
- * Date: 2018-6-8
+ * Author: Traceless
+ * Date: 2020年3月4日 11:56:09
  */
 
 namespace Pay\payjswx;
@@ -14,7 +14,7 @@ class payjswx
 {
     private $paymethod = "payjswx";
 
-    private $payjs_native_url = 'https://payjs.cn/api/native';
+    private $payjs_native_url = 'https://payjs.cn/api/cashier?';
 
     //处理请求
     public function pay($payconfig, $params)
@@ -25,22 +25,31 @@ class payjswx
             'body'         => $params['orderid'],
             'out_trade_no' => $params['orderid'],
             'total_fee'    => $params['money'] * 100,
-            "notify_url"   => $params['weburl'] . '/product/notify/?paymethod='.$this->paymethod,
+            'notify_url'   => $params['weburl'] . 'product/notify/?paymethod='.$this->paymethod,
+		  'callback_url' => $params['payjsredicurl'] ,
+		  'logo'		  => $params['payjspagelogo'] ,
+		  'auto'		  => '1'
+			
         ];
         $this->key    = $payconfig['app_secret'];
         $data['sign'] = $this->sign($data);
+		
+		// 浏览器跳转到收银台
+		//$url = 'https://payjs.cn/api/cashier?' . 'mchid=' . $payconfig['app_id'] . '&out_trade_no=' . $data['out_trade_no'] . '&total_fee'. $data['total_fee']. '&total_fee'. $data['total_fee'] . '$notify_url=' . $data['notify_url'];
+		$url = $this->payjs_native_url . http_build_query($data);
 
-        $result = $this->post($data, $this->payjs_native_url);
-        $result = json_decode($result, true);
-
+        //$result = $this->post($data, $this->payjs_native_url);
+        //$result = json_decode($result, true);
+		
         $result_params = [
             'type'      => 0,
             'subjump'   => 0,
             'paymethod' => $this->paymethod,
-            'qr'        => $params['qrserver'] . urlencode($result['code_url']),
+            'qr'        => $params['qrserver'] . urlencode($url),
             'payname'   => $payconfig['payname'],
             'overtime'  => $payconfig['overtime'],
             'money'     => $params['money'],
+			'msg'		=> $url
         ];
 
         return ['code' => 1, 'msg' => 'success', 'data' => $result_params];
