@@ -105,8 +105,8 @@ INSERT INTO `t_config` (`id`, `catid`, `name`, `value`, `tag`, `lock`, `updateti
 (31, 1, 'emailsendtypeswitch', '1', '发送用户邮件方式筛选开关', '1', '1546063186'),
 (32, 1, 'querycontactswitch', '1', '查询方式(联系方式)开关', '1', '1546063186'),
 (33, 1, 'tpl', 'hyacinth', '全新的整站模版', '1', '1546063186'),
-(33, 1, 'payjsredicurl', '', 'Payjs支付后跳转的页面', '1', '1546063186'),
-(33, 1, 'payjspagelogo', '', 'Payjs支付时的上架logo', '1', '1546063186');
+(34, 1, 'payjsredicurl', '', 'Payjs支付后跳转的页面', '1', '1546063186'),
+(35, 1, 'payjspagelogo', '', 'Payjs支付时的上架logo', '1', '1546063186');
 -- --------------------------------------------------------
 
 --
